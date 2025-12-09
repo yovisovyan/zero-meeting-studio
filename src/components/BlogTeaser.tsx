@@ -3,7 +3,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { posts } from "../lib/posts";
 
-
 export default function BlogTeaser() {
   return (
     <section className="py-32 bg-black text-white">
@@ -24,15 +23,22 @@ export default function BlogTeaser() {
             >
               <div className="relative w-full h-56 rounded-xl overflow-hidden mb-4">
                 <Image
-                  src={post.image}
+                  src={post.image ?? "/placeholder.jpg"}   // ✅ Fix: always provide a valid image
                   alt={post.title}
                   fill
                   className="object-cover group-hover:scale-105 transition-transform duration-700"
                 />
               </div>
-              <h3 className="text-xl font-semibold group-hover:text-white/90">{post.title}</h3>
+
+              <h3 className="text-xl font-semibold group-hover:text-white/90">
+                {post.title}
+              </h3>
+
               <p className="text-gray-400 text-sm mt-2">{post.excerpt}</p>
-              <p className="text-brand-500 mt-3 text-sm group-hover:underline">Read more →</p>
+
+              <p className="text-brand-500 mt-3 text-sm group-hover:underline">
+                Read more →
+              </p>
             </Link>
           ))}
         </div>
