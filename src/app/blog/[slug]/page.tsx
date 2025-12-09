@@ -1,3 +1,5 @@
+// src/app/blog/[slug]/page.tsx
+
 import { posts } from "@/lib/posts";
 import Image from "next/image";
 import { notFound } from "next/navigation";
@@ -28,8 +30,19 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
       )}
 
       <article className="prose prose-invert leading-relaxed">
-        {post.excerpt}
-        <br />
-        <br />
+        <p>{post.excerpt}</p>
+
         <p>
-          This is p
+          This is placeholder blog content. Replace this with real content,
+          Markdown, or CMS-powered text. For now, this ensures your dynamic
+          blog route builds correctly on Vercel.
+        </p>
+
+        <p>
+          Add as many paragraphs as you want. The key is that all tags are
+          properly closed so the JSX parser can interpret the file.
+        </p>
+      </article>
+    </main>
+  );
+}
