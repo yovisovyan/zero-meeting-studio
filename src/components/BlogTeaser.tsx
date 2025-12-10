@@ -23,9 +23,11 @@ export default function BlogTeaser() {
             >
               <div className="relative w-full h-56 rounded-xl overflow-hidden mb-4">
                 <Image
-                  src={post.image ?? "/placeholder.jpg"}   // ✅ Fix: always provide a valid image
+                  src={post.image}
                   alt={post.title}
                   fill
+                  priority
+                  unoptimized={false}
                   className="object-cover group-hover:scale-105 transition-transform duration-700"
                 />
               </div>

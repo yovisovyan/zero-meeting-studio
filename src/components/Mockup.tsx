@@ -61,7 +61,7 @@ export default function Mockup() {
               {/* Screenshot */}
               <div className="relative aspect-[16/9] w-full overflow-hidden rounded-2xl border border-white/10 bg-slate-900">
                 <Image
-                  src="/mockup.jpg"
+                  src="/mockup 19.46.01.png"
                   alt="Zero-Meeting website mockup"
                   fill
                   className="object-cover object-top"

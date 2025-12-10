@@ -4,7 +4,7 @@ const members = [
   {
     name: "Yovi",
     role: "Founder & Lead Web Architect",
-    img: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
+    img: "https://pps.services.adobe.com/api/profile/05140B155B42765F0A495EEA@AdobeID/image/fae0c5ff-f2e3-46e7-a0c3-18dd77726f53/230",
     desc: "$20k+ earned on Upwork before launching Zero-Meeting Studio. Specializes in landing pages, funnels, and growth-driven UX with a focus on speed and clarity.",
   },
   {
