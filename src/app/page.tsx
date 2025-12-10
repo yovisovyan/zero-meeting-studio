@@ -11,7 +11,13 @@ import CompanyProfile from "@/components/CompanyProfile";
 import Mission from "@/components/Mission";
 import Team from "@/components/Team";
 import PortfolioSection from "@/components/PortfolioSection";
-import Footer from "@/components/Footer";
+import UpworkProof from "@/components/UpworkProof";
+import RiskReversal from "@/components/RiskReversal";
+import AsyncTimeline from "@/components/AsyncTimeline";
+import MiniCaseStudies from "@/components/MiniCaseStudies";
+import FounderPromise from "@/components/FounderPromise";
+import FinalCTA from "@/components/FinalCTA";
+
 
 export default function Page() {
   return (
@@ -19,14 +25,20 @@ export default function Page() {
       <Hero />
       <Mockup />
       <Features />
+      <AsyncTimeline />
+      <RiskReversal />
+      <MiniCaseStudies />
+      <UpworkProof />
       <Testimonials />
-      <BlogTeaser />
       <Pricing />
+      <FounderPromise />
       <FAQ />
+      <PortfolioSection />
+      <BlogTeaser />
       <CompanyProfile />
       <Mission />
       <Team />
-      <PortfolioSection />
+      <FinalCTA />
     </main>
   );
 }

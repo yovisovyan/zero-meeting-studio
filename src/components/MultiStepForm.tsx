@@ -3,6 +3,9 @@
 import { useEffect, useState, ChangeEvent, FormEvent } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, Check, Info } from "lucide-react";
+import { useRef } from "react";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
 
 const STORAGE_KEY = "zm-onboarding-v1";
 
@@ -64,6 +67,9 @@ export default function MultiStepForm() {
   const [showResumePrompt, setShowResumePrompt] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [lastSavedAt, setLastSavedAt] = useState<string | null>(null);
+
+
+  const formRef = useRef<HTMLDivElement>(null);
 
   // ---- LOAD FROM LOCAL STORAGE ONCE ----
   useEffect(() => {
@@ -709,92 +715,110 @@ function StepFour({ formData, handleChange }: StepProps) {
 /* -------------------- THANK YOU SCREEN -------------------- */
 
 function ThankYouScreen({ formData }: { formData: FormData }) {
-  function handleDownload() {
-    if (typeof window !== "undefined") {
-      window.print(); // Simple way to “Save as PDF” from browser
-    }
+  const pdfRef = useRef<HTMLDivElement>(null);
+
+  async function handleDownload() {
+    if (!pdfRef.current) return;
+
+    const canvas = await html2canvas(pdfRef.current, {
+      scale: 2,
+      backgroundColor: "#0b0b0f",
+    });
+
+    const imgData = canvas.toDataURL("image/png");
+    const pdf = new jsPDF({
+      orientation: "portrait",
+      unit: "px",
+      format: [canvas.width, canvas.height],
+    });
+
+    pdf.addImage(imgData, "PNG", 0, 0, canvas.width, canvas.height);
+    pdf.save("zero-meeting-project-brief.pdf");
   }
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 16 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="py-10 px-4 text-center"
-    >
-      <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-black via-black/90 to-[#111827] px-6 py-12 md:px-10 md:py-16">
-        {/* Faux confetti */}
-        <div className="pointer-events-none absolute inset-0 opacity-30 mix-blend-screen">
-          <div className="absolute -top-8 left-10 w-32 h-32 bg-gradient-to-br from-[#A855F7] via-[#EC4899] to-transparent blur-3xl" />
-          <div className="absolute top-10 right-4 w-28 h-28 bg-gradient-to-tr from-[#22D3EE] via-[#6366F1] to-transparent blur-3xl" />
-          <div className="absolute bottom-[-20px] left-1/2 -translate-x-1/2 w-40 h-40 bg-gradient-to-tr from-[#4ADE80] via-[#22C55E] to-transparent blur-3xl" />
+    <>
+      {/* ================= PDF CONTENT (HIDDEN) ================= */}
+      <div
+        ref={pdfRef}
+        className="fixed -left-[9999px] top-0 w-[800px] bg-[#0b0b0f] text-white p-10"
+      >
+        <h1 className="text-3xl font-semibold mb-6">
+          Zero-Meeting Studio — Project Brief
+        </h1>
+
+        <div className="space-y-3 text-sm">
+          <p><strong>Name:</strong> {formData.fullName}</p>
+          <p><strong>Email:</strong> {formData.email}</p>
+          <p><strong>Company:</strong> {formData.company}</p>
+          <p><strong>Website:</strong> {formData.website}</p>
+          <p><strong>Project Type:</strong> {formData.projectType}</p>
+          <p><strong>Budget:</strong> {formData.budget}</p>
+          <p><strong>Timeline:</strong> {formData.timeline}</p>
+          <p><strong>Goals:</strong> {formData.goals}</p>
+          <p><strong>Audience:</strong> {formData.audience}</p>
+          <p><strong>Style:</strong> {formData.style}</p>
+          <p><strong>References:</strong> {formData.referenceLinks}</p>
+          <p><strong>Copy Ready:</strong> {formData.copyReady}</p>
+          <p><strong>Copywriting:</strong> {formData.needCopywriting}</p>
+          <p><strong>Async Tools:</strong> {formData.asyncTools}</p>
+          <p><strong>Risks:</strong> {formData.biggestRisk}</p>
+          <p><strong>Notes:</strong> {formData.anythingElse}</p>
+          <p><strong>Heard From:</strong> {formData.heardFrom}</p>
         </div>
 
-        <div className="relative z-10 max-w-2xl mx-auto">
-          <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-white/10 mb-4">
-            <Check className="w-7 h-7 text-emerald-400" />
-          </div>
-
-          <h2 className="text-3xl md:text-4xl font-semibold mb-3">
-            Brief received. <span className="text-[#A78BFA]">Thank you.</span>
-          </h2>
-
-          <p className="text-sm md:text-base text-white/60 mb-6">
-            We’ll review your answers and get back to{" "}
-            <span className="text-white font-medium">{formData.email || "your inbox"}</span> with
-            next steps, pricing, and a proposed game plan.
-          </p>
-
-          <div className="text-left text-sm bg-black/40 border border-white/10 rounded-2xl p-4 mb-6">
-            <p className="text-white/70 mb-2 font-medium">Summary highlights</p>
-            <ul className="space-y-1 text-white/60">
-              {formData.company && (
-                <li>
-                  <span className="text-white/40">Brand: </span>
-                  {formData.company}
-                </li>
-              )}
-              {formData.projectType && (
-                <li>
-                  <span className="text-white/40">Project: </span>
-                  {formData.projectType}
-                </li>
-              )}
-              {formData.budget && (
-                <li>
-                  <span className="text-white/40">Budget: </span>
-                  {formData.budget}
-                </li>
-              )}
-              {formData.timeline && (
-                <li>
-                  <span className="text-white/40">Timeline: </span>
-                  {formData.timeline}
-                </li>
-              )}
-              {formData.goals && (
-                <li>
-                  <span className="text-white/40">Main goal: </span>
-                  {formData.goals}
-                </li>
-              )}
-            </ul>
-          </div>
-
-          <div className="flex flex-col md:flex-row items-center justify-center gap-3">
-            <button
-              type="button"
-              onClick={handleDownload}
-              className="px-5 py-2.5 rounded-xl bg-white text-black text-sm font-medium hover:bg-gray-100 transition"
-            >
-              Download this brief as PDF
-            </button>
-
-            <p className="text-xs text-white/40">
-              You can also keep this tab open if you want to copy details later.
-            </p>
-          </div>
-        </div>
+        <p className="mt-10 text-xs opacity-50">
+          Generated by Zero-Meeting Studio · zeromeeting.studio
+        </p>
       </div>
-    </motion.div>
+
+      {/* ================= VISIBLE UI ================= */}
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="py-10 px-4 text-center"
+      >
+        <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-black via-black/90 to-[#111827] px-6 py-12 md:px-10 md:py-16">
+
+          {/* Confetti glow */}
+          <div className="pointer-events-none absolute inset-0 opacity-30">
+            <div className="absolute top-0 left-10 w-40 h-40 bg-purple-500 blur-3xl" />
+            <div className="absolute bottom-0 right-10 w-32 h-32 bg-indigo-500 blur-3xl" />
+          </div>
+
+          <div className="relative z-10 max-w-2xl mx-auto">
+            <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-white/10 mb-4">
+              <Check className="w-7 h-7 text-emerald-400" />
+            </div>
+
+            <h2 className="text-3xl md:text-4xl font-semibold mb-3">
+              Brief received.
+              <span className="text-[#A78BFA]"> You’re all set.</span>
+            </h2>
+
+            <p className="text-white/60 mb-6">
+              We’ll review everything and reply to{" "}
+              <span className="text-white font-medium">
+                {formData.email || "your inbox"}
+              </span>{" "}
+              within <strong>3 hours</strong>.
+            </p>
+
+            <div className="flex flex-col md:flex-row items-center justify-center gap-4">
+              <button
+                onClick={handleDownload}
+                className="px-6 py-3 rounded-xl bg-white text-black text-sm font-medium hover:bg-gray-100 transition"
+              >
+                Download this brief as PDF
+              </button>
+
+              <p className="text-xs text-white/40 max-w-sm">
+                Save this summary for internal review or sharing with your team.
+              </p>
+            </div>
+          </div>
+        </div>
+      </motion.div>
+    </>
   );
 }
