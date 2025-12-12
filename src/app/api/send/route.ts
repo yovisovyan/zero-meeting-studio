@@ -1,18 +1,25 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
+import twilio from "twilio";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
+
+// Twilio client
+const twilioClient = twilio(
+  process.env.TWILIO_ACCOUNT_SID,
+  process.env.TWILIO_AUTH_TOKEN
+);
 
 export async function POST(req: Request) {
   try {
     const body = await req.json();
 
-    // Auto-format all fields into HTML
+    // ---- Generate dynamic email HTML from all fields ----
     const html = `
-      <h2>New Zero-Meeting Onboarding Submission</h2>
-      <p>You received a new project brief from the /start form.</p>
-      <hr />
-      <div style="font-size:14px; line-height:1.6;">
+      <h2>New Zero-Meeting Submission</h2>
+      <p>You received a new project brief.</p>
+      <hr/>
+      <div style="font-size:14px;line-height:1.6;">
         ${Object.entries(body)
           .map(([key, value]) => {
             const label = key
@@ -22,10 +29,13 @@ export async function POST(req: Request) {
           })
           .join("")}
       </div>
-      <hr />
-      <p style="opacity:0.6;font-size:12px;">Sent automatically by Zero-Meeting Studio · zeromeeting.site</p>
+      <hr/>
+      <p style="opacity:0.6;font-size:12px;">
+        Sent automatically by Zero-Meeting Studio.
+      </p>
     `;
 
+    // ---- Send EMAIL ----
     await resend.emails.send({
       from: "Zero-Meeting Studio <info@zeromeeting.site>",
       to: ["info@zeromeeting.site"],
@@ -33,9 +43,16 @@ export async function POST(req: Request) {
       html,
     });
 
+    // ---- Send WhatsApp Notification ----
+    await twilioClient.messages.create({
+      from: process.env.TWILIO_WHATSAPP_FROM!, // your Twilio WhatsApp number
+      to: process.env.TWILIO_WHATSAPP_TO!,     // your personal WhatsApp number
+      body: `🔥 New Zero-Meeting submission!\n\nCheck your inbox → info@zeromeeting.site\n\nName: ${body.fullName}\nProject Type: ${body.projectType}`
+    });
+
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error("Email send error:", error);
-    return NextResponse.json({ error: "Failed to send email" }, { status: 500 });
+    console.error("Notification error:", error);
+    return NextResponse.json({ error: "Failed to send notifications" }, { status: 500 });
   }
 }

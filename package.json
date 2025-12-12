@@ -23,7 +23,8 @@
     "remark": "^15.0.1",
     "remark-html": "^16.0.1",
     "resend": "^6.5.2",
-    "tailwind": "^2.3.1"
+    "tailwind": "^2.3.1",
+    "twilio": "^5.10.7"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.17",
