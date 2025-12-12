@@ -7,33 +7,30 @@ export async function POST(req: Request) {
   try {
     const body = await req.json();
 
+    // Auto-format all fields into HTML
+    const html = `
+      <h2>New Zero-Meeting Onboarding Submission</h2>
+      <p>You received a new project brief from the /start form.</p>
+      <hr />
+      <div style="font-size:14px; line-height:1.6;">
+        ${Object.entries(body)
+          .map(([key, value]) => {
+            const label = key
+              .replace(/([A-Z])/g, " $1")
+              .replace(/^./, (s) => s.toUpperCase());
+            return `<p><strong>${label}:</strong> ${value || "-"}</p>`;
+          })
+          .join("")}
+      </div>
+      <hr />
+      <p style="opacity:0.6;font-size:12px;">Sent automatically by Zero-Meeting Studio · zeromeeting.site</p>
+    `;
+
     await resend.emails.send({
       from: "Zero-Meeting Studio <info@zeromeeting.site>",
       to: ["info@zeromeeting.site"],
-      subject: "New Project Submission — Zero-Meeting Studio",
-      html: `
-        <h2>New Project Submitted</h2>
-        <p><strong>Name:</strong> ${body.fullName}</p>
-        <p><strong>Email:</strong> ${body.email}</p>
-        <p><strong>Company:</strong> ${body.company}</p>
-        <p><strong>Website:</strong> ${body.website}</p>
-        <p><strong>Project Type:</strong> ${body.projectType}</p>
-        <p><strong>Budget:</strong> ${body.budget}</p>
-        <p><strong>Timeline:</strong> ${body.timeline}</p>
-        <p><strong>Main Goal:</strong> ${body.goals}</p>
-        <p><strong>Audience:</strong> ${body.audience}</p>
-        <p><strong>Style:</strong> ${body.style}</p>
-        <p><strong>References:</strong> ${body.referenceLinks}</p>
-        <p><strong>Copy Ready:</strong> ${body.copyReady}</p>
-        <p><strong>Need Copywriting:</strong> ${body.needCopywriting}</p>
-        <p><strong>Async Tools:</strong> ${body.asyncTools}</p>
-        <p><strong>Risks:</strong> ${body.biggestRisk}</p>
-        <p><strong>Notes:</strong> ${body.anythingElse}</p>
-        <p><strong>Heard From:</strong> ${body.heardFrom}</p>
-
-        <br/><hr/>
-        <p style="opacity:0.6">Sent automatically from ZeroMeeting Studio onboarding.</p>
-      `,
+      subject: "🔥 New Project Submission — Zero-Meeting Studio",
+      html,
     });
 
     return NextResponse.json({ success: true });
