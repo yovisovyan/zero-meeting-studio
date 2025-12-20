@@ -446,7 +446,7 @@ function StepOne({ formData, handleChange }: StepProps) {
           name="fullName"
           value={formData.fullName}
           onChange={handleChange}
-          placeholder="e.g. Yovi Saputra"
+          placeholder="e.g. Adam Smith"
         />
       </div>
 

@@ -125,7 +125,7 @@ export default function StartPage() {
           <p className="text-white/50">
             Need help? Email{" "}
             <span className="text-white font-medium">
-              hello@zeromeeting.studio
+              info@zeromeeting.site
             </span>
           </p>
 
@@ -134,7 +134,7 @@ export default function StartPage() {
           <p className="text-white/60">
             Feeling overwhelmed?{" "}
             <span className="text-brand-500 hover:underline underline-offset-4 cursor-pointer">
-              Contact us directly
+              Contact us directly to info@zeromeeting.site
             </span>
           </p>
         </div>

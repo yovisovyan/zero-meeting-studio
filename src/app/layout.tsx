@@ -2,10 +2,13 @@
 import type { Metadata } from "next";
 import "./globals.css";
 
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+
 export const metadata: Metadata = {
-  title: "Zero-Meeting Studio — Apple-Grade Landing Pages That Convert",
+  title: "Zero-Meeting Studio | Premium Web Design & Landing Pages - No Meetings Required",
   description:
-      "We design Apple-grade landing pages, business websites, and Shopify stores for founders — fast, conversion-focused, and without meetings.",
+    "Zero-Meeting Studio builds Apple-grade landing pages, business websites, and Shopify stores for founders. Fast async delivery in 48–72 hours. No meetings, no calls, just results.",
   keywords: [
     "web design",
     "landing pages",
@@ -15,7 +18,7 @@ export const metadata: Metadata = {
     "conversion-focused design",
     "premium websites",
   ],
-  authors: [{ name: "Zero Meeting Studio" }],
+  authors: [{ name: "Zero-Meeting Studio" }],
   creator: "Zero-Meeting Studio",
   metadataBase: new URL("https://www.zeromeeting.site"),
   alternates: {
@@ -77,7 +80,7 @@ export default function RootLayout({
               contactPoint: {
                 "@type": "ContactPoint",
                 contactType: "Customer Service",
-                email: "hello@zeromeeting.studio",
+                email: "info@zeromeeting.site",
                 telephone: "+62-8515-6974-570",
               },
               sameAs: [
@@ -87,7 +90,12 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body>{children}</body>
+
+      <body className="bg-black text-white antialiased">
+        <Header />
+        <main>{children}</main>
+        <Footer />
+      </body>
     </html>
   );
 }
