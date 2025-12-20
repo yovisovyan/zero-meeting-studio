@@ -1,0 +1,13 @@
+User-agent: *
+Allow: /
+
+Disallow: /admin
+Disallow: /private
+Disallow: /*.json$
+Disallow: /*?*sort=
+Disallow: /*?*filter=
+
+Crawl-delay: 1
+Request-rate: 1/1s
+
+Sitemap: https://www.zeromeeting.site/sitemap.xml
