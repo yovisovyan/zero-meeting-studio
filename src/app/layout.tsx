@@ -3,9 +3,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Zero-Meeting Studio | Premium Web Design & Landing Pages - No Meetings Required",
+  title: "Zero-Meeting Studio — Apple-Grade Landing Pages That Convert",
   description:
-    "Zero-Meeting Studio builds Apple-grade landing pages, business websites, and Shopify stores for founders. Fast async delivery in 48-72 hours. No meetings, no calls, just results.",
+      "We design Apple-grade landing pages, business websites, and Shopify stores for founders — fast, conversion-focused, and without meetings.",
   keywords: [
     "web design",
     "landing pages",
@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     "conversion-focused design",
     "premium websites",
   ],
-  authors: [{ name: "Zero-Meeting Studio" }],
+  authors: [{ name: "Zero Meeting Studio" }],
   creator: "Zero-Meeting Studio",
   metadataBase: new URL("https://www.zeromeeting.site"),
   alternates: {
